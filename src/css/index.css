@@ -133,7 +133,13 @@ body {
 .c-msg__title {
     font-weight: bold;
     font-size: 26px;
+    line-height: 35px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
+
+
 
 .c-msg__channels-list {
     font-size: 16px;
@@ -142,6 +148,10 @@ body {
 .c-msg__artist {
     font-weight: bold;
     font-size: 18px;
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
 }
 
 .c-progress{
