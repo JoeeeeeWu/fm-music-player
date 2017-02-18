@@ -1,0 +1,24 @@
+{
+  "name": "fm-music-player",
+  "version": "1.0.0",
+  "description": "- 播放/暂停\r - 下一曲（随机）\r - 切换频道\r - 调节音量\r - 静音\r - 调节播放进度\r - 是否显示歌词\r - 同步显示歌词",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.1",
+    "gulp-clean": "^0.3.2",
+    "gulp-clean-css": "^3.0.2",
+    "gulp-concat": "^2.6.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-make-css-url-version": "0.0.13",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.0.1"
+  }
+}
