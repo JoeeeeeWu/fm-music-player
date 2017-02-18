@@ -6,16 +6,19 @@ function MusicPlayer($container) {
     this.channelId = "";
     this.song = {};
     this.$audio = $("#music");
+    console.log(this.$audio[0].duration);
     this.audio = this.$audio[0];
     this.$title = this.$container.find(".c-msg__title");
     this.$artist = this.$container.find(".c-msg__artist");
     this.$channel = this.$container.find(".c-msg__channel");
     this.channelName = "";
+    this.poster = this.$container.find(".c-poster");
     this.$posterImg = this.$container.find(".c-poster__img");
     this.sid = null;
     this.lyric = "";
     this.lyricTimeArr = [];
     this.$lyricList = this.$container.find(".c-lyric__list");
+    this.$lyric = this.$container.find(".c-lyric");
     this.$playPause = this.$container.find(".c-control__play-pause");
     this.$next = this.$container.find(".c-control__next");
     this.$posterImg = this.$container.find(".c-poster__img");
@@ -36,6 +39,8 @@ function MusicPlayer($container) {
     this.$basicVolume = this.$container.find(".c-setting__basic-volume");
     this.$curVolume = this.$container.find(".c-setting__cur-volume");
 
+    this.firstLoad = true;
+
     this.init();
     this.bind();
 
@@ -44,13 +49,13 @@ function MusicPlayer($container) {
 MusicPlayer.prototype.init = function () {
     this.getChannels();
     this.autoPlay();
+    this.playStateChange();
 }
 
 MusicPlayer.prototype.bind = function () {
     this.changeLyric();
     this.playPause();
     this.nextSong();
-    this.rotatePostImage();
     this.changeChannel();
     this.showLyric();
     this.showChannelsList();
@@ -58,6 +63,20 @@ MusicPlayer.prototype.bind = function () {
     this.changeProgress();
     this.setMute();
     this.changeVolume();
+    this.handleResize();
+}
+
+MusicPlayer.prototype.handleResize = function () {
+    var _this = this;
+    $(window).resize(function(){
+        if(window.innerWidth>768){
+            _this.poster.css("display","block")
+        }else{
+            if(_this.$lyricBtn.hasClass("c-setting__lyric--active")){
+                _this.poster.css("display","none")
+            }
+        }
+    })
 }
 
 MusicPlayer.prototype.getChannels = function () {
@@ -84,7 +103,12 @@ MusicPlayer.prototype.getSong = function (str) {
     }).done(function (data) {
         _this.song = JSON.parse(data).song[0];
         _this.roadSong();
-
+        if(_this.firstLoad){
+            _this.firstLoad=false;
+            return
+        }else{
+            _this.audio.play();
+        } 
     });
 }
 
@@ -95,8 +119,6 @@ MusicPlayer.prototype.roadSong = function () {
     this.$channel.text("频道：" + this.channelName);
     this.$posterImg.css("background-image", "url(" + this.song.picture + ")");
     this.getLyric();
-    this.audio.play();
-    this.$playPause.removeClass("icon-play").addClass("icon-pause");
 }
 
 MusicPlayer.prototype.getLyric = function () {
@@ -117,7 +139,7 @@ MusicPlayer.prototype.loadLyric = function () {
     var lyricArr = this.lyric.split("\n");
     for (var i = 0; i < lyricArr.length; i++) {
         var lyricText = lyricArr[i].slice(10) || "---";
-        var lyricRow = `<p class=\"c-lyric__item` + i + `\">` + lyricText + `</p>`;
+        var lyricRow = '<p class=\"c-lyric__item' + i + '\">' + lyricText + '</p>';
         this.$lyricList.append(lyricRow);
         var lyricTime = Math.round(parseFloat(lyricArr[i].slice(1, 3)) * 60 + parseFloat(lyricArr[i].slice(4, 9)));
         this.lyricTimeArr.push(lyricTime);
@@ -148,11 +170,21 @@ MusicPlayer.prototype.playPause = function () {
     this.$playPause.on("click", function () {
         if (_this.audio.paused) {
             _this.audio.play();
-            _this.$playPause.removeClass("icon-play").addClass("icon-pause");
         } else {
             _this.audio.pause();
-            _this.$playPause.removeClass("icon-pause").addClass("icon-play");
         }
+    });
+}
+
+MusicPlayer.prototype.playStateChange = function () {
+    var _this = this;
+    this.$audio.on('play',function () {
+        _this.$playPause.removeClass("icon-play").addClass("icon-pause");
+        _this.$posterImg.css("animation-play-state", "running");
+    });
+    this.$audio.on('pause',function () {
+        _this.$playPause.removeClass("icon-pause").addClass("icon-play");
+        _this.$posterImg.css("animation-play-state", "paused");
     });
 }
 
@@ -160,18 +192,7 @@ MusicPlayer.prototype.nextSong = function () {
     var _this = this;
     this.$next.on("click", function () {
         _this.audio.pause();
-        _this.$playPause.removeClass("icon-pause").addClass("icon-play");
         _this.getSong();
-    });
-}
-
-MusicPlayer.prototype.rotatePostImage = function () {
-    var _this = this;
-    this.$audio.on("play", function () {
-        _this.$posterImg.css("animation-play-state", "running");
-    });
-    this.$audio.on("pause", function () {
-        _this.$posterImg.css("animation-play-state", "paused");
     });
 }
 
@@ -198,10 +219,18 @@ MusicPlayer.prototype.changeChannel = function () {
 MusicPlayer.prototype.showLyric = function () {
     var _this = this;
     this.$lyricBtn.on("click", function () {
-        if (_this.$lyricList.css("display") !== "none") {
-            _this.$lyricList.fadeOut();
+        if (_this.$lyric.css("display") !== "none") {
+            if(window.innerWidth<768){
+                _this.poster.fadeIn();
+            }
+            _this.$lyric.fadeOut();
+            _this.$lyricBtn.removeClass("c-setting__lyric--active")
         } else {
-            _this.$lyricList.fadeIn();
+            if(window.innerWidth<768){
+                _this.poster.fadeOut();
+            }
+            _this.$lyric.fadeIn();
+            _this.$lyricBtn.addClass("c-setting__lyric--active")
         }
     });
 }
@@ -226,8 +255,9 @@ MusicPlayer.prototype.showChannelsList = function () {
 
 MusicPlayer.prototype.setTime = function () {
     var _this = this;
-    this.$audio.on("loadedmetadata", function () {
+    this.$audio.on("durationchange", function () {
         _this.totalTime = _this.audio.duration;
+        console.log(_this.audio.duration);
         var text = _this.formatTime(_this.totalTime);
         _this.$totalTime.text(text);
     });
@@ -236,7 +266,9 @@ MusicPlayer.prototype.setTime = function () {
         var text = _this.formatTime(_this.curTime);
         _this.$curTime.text(text);
         var baseWidth = _this.$baseBar.width();
-        var curWdth = baseWidth * _this.curTime / _this.totalTime;
+        var curWdth = baseWidth *(_this.curTime/_this.totalTime);
+        // _this.audio.duration
+        console.log(_this.audio.duration);
         _this.$curBar.width(curWdth);
     }, 500);
 }
@@ -272,6 +304,7 @@ MusicPlayer.prototype.setMute = function () {
             _this.audio.volume = _this.volume;
             _this.$volumeBtn.removeClass("icon-mute").addClass("icon-volume");
         }
+        console.log(_this.audio.volume)
     });
 }
 
@@ -284,7 +317,11 @@ MusicPlayer.prototype.changeVolume = function () {
         var target = posX - offsetLeft;
         _this.audio.volume = 1 * target / _this.$basicVolume.width();
         _this.volume = _this.audio.volume;
+        console.log(_this.audio.volume);
         _this.$curVolume.width(target);
+        if(_this.$volumeBtn.hasClass('icon-mute')){
+            _this.$volumeBtn.removeClass("icon-mute").addClass("icon-volume");
+        }
     });
 
 }

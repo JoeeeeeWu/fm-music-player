@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="referrer" content="never">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
     <title>FM音乐播放器</title>
     <link rel="stylesheet" href="css/icomoon/style.css">
     <link rel="stylesheet" href="css/index.css">
@@ -33,17 +34,17 @@
             </div>
         </div>
         <div class="l-progress">
-            <div class="c-progress">
-                <div class="c-progress__current-time">0 : 00</div>
+            <div class="c-progress u-clearfix">
+                <p class="c-progress__current-time">0 : 00</p>
                 <div class="c-progress__basebar">
                     <div class="c-progress__curbar"></div>
                 </div>
-                <div class="c-progress__total-time">0 : 00</div>
+                <p class="c-progress__total-time">0 : 00</p>
             </div>
         </div>
         <div class="l-handle u-clearfix">
             <div class="c-control">
-                <span class="c-control__play-pause icon-pause"></span>
+                <span class="c-control__play-pause icon-play"></span>
                 <span class="c-control__next icon-skip-forward"></span>
             </div>
             <div class="c-setting">
@@ -51,15 +52,21 @@
                 <div class="c-setting__basic-volume">
                     <div class="c-setting__cur-volume"></div>
                 </div>
-                <span class="c-setting__lyric icon-paper"></span>
-                <span class="c-setting__channel icon-menu"></span>
+                <div class="c-setting__team">
+                    <span class="c-setting__lyric icon-paper"></span>
+                    <span class="c-setting__channel icon-menu"></span>
+                </div>
+                <ul class="c-channels-list"></ul>
             </div>
-            <ul class="c-channels-list"></ul>
         </div>
     </div>
     <script src="js/jquery.min.js"></script>
+    <script src="js/fastclick.js"></script>
     <script src="js/music-player.js"></script>
     <script>
+        $(function() {
+            FastClick.attach(document.body);
+        });
         new MusicPlayer($("#l-music-player"));
     </script>
 </body>
