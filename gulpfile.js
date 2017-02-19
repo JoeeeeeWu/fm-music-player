@@ -39,11 +39,8 @@ gulp.task('minirevjs',function(){
     }))
     .pipe(rev())
     .pipe(gulp.dest('./disk/js'))
-    .pipe(rev.manifest({
-        base : 'rev',
-        merge: true
-    }))
-    .pipe(gulp.dest('rev'))
+    .pipe(rev.manifest())
+    .pipe(gulp.dest('./rev/js'))
 })
 
 gulp.task('style',function(){
@@ -61,11 +58,8 @@ gulp.task('style',function(){
     }))
     .pipe(rev())
     .pipe(gulp.dest('./disk/css'))
-    .pipe(rev.manifest({
-        base : 'rev',
-        merge: true,
-    }))
-    .pipe(gulp.dest('./rev'));
+    .pipe(rev.manifest())
+    .pipe(gulp.dest('./rev/css'));
 });
 
 
