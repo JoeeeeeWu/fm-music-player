@@ -6,7 +6,6 @@ function MusicPlayer($container) {
     this.channelId = "";
     this.song = {};
     this.$audio = $("#music");
-    console.log(this.$audio[0].duration);
     this.audio = this.$audio[0];
     this.$title = this.$container.find(".c-msg__title");
     this.$artist = this.$container.find(".c-msg__artist");
@@ -257,7 +256,6 @@ MusicPlayer.prototype.setTime = function () {
     var _this = this;
     this.$audio.on("durationchange", function () {
         _this.totalTime = _this.audio.duration;
-        console.log(_this.audio.duration);
         var text = _this.formatTime(_this.totalTime);
         _this.$totalTime.text(text);
     });
@@ -267,8 +265,6 @@ MusicPlayer.prototype.setTime = function () {
         _this.$curTime.text(text);
         var baseWidth = _this.$baseBar.width();
         var curWdth = baseWidth *(_this.curTime/_this.totalTime);
-        // _this.audio.duration
-        console.log(_this.audio.duration);
         _this.$curBar.width(curWdth);
     }, 500);
 }
@@ -304,7 +300,6 @@ MusicPlayer.prototype.setMute = function () {
             _this.audio.volume = _this.volume;
             _this.$volumeBtn.removeClass("icon-mute").addClass("icon-volume");
         }
-        console.log(_this.audio.volume)
     });
 }
 
@@ -317,7 +312,6 @@ MusicPlayer.prototype.changeVolume = function () {
         var target = posX - offsetLeft;
         _this.audio.volume = 1 * target / _this.$basicVolume.width();
         _this.volume = _this.audio.volume;
-        console.log(_this.audio.volume);
         _this.$curVolume.width(target);
         if(_this.$volumeBtn.hasClass('icon-mute')){
             _this.$volumeBtn.removeClass("icon-mute").addClass("icon-volume");
