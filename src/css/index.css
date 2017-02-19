@@ -269,7 +269,7 @@ body {
     background-color: #eaeced;
     border: solid 1px #999;
     border-radius: 4px;
-    font-size: 14px;
+    font-size: 16px;
     top: -340px;
     right: 20px;
     height: 350px;
@@ -338,5 +338,16 @@ body {
 
     .c-setting__team{
         float: right;
+    }
+
+    .c-channels-list{
+        position: fixed;
+        top: inherit;
+        right: inherit;
+        bottom: 0;
+        left: 0;
+        width: 100vw;
+        height: 250px;
+        box-sizing: border-box;
     }
 }
