@@ -11,7 +11,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection" content="telphone=no, email=no"/>
     <title>FM音乐播放器</title>
-    <link rel="stylesheet" href="css/main.min.css">
+    <link rel="stylesheet" href="./css/main.min.css">
 </head>
 
 <body>
@@ -37,36 +37,38 @@
                 <p class="c-msg__channel">频道</p>
             </div>
         </div>
-        <div class="l-progress">
-            <div class="c-progress u-clearfix">
-                <p class="c-progress__current-time">0 : 00</p>
-                <div class="c-progress__basebar">
-                    <div class="c-progress__curbar"></div>
+        <div class="l-action">
+            <div class="l-progress">
+                <div class="c-progress u-clearfix">
+                    <p class="c-progress__current-time">0 : 00</p>
+                    <div class="c-progress__basebar">
+                        <div class="c-progress__curbar"></div>
+                    </div>
+                    <p class="c-progress__total-time">0 : 00</p>
                 </div>
-                <p class="c-progress__total-time">0 : 00</p>
             </div>
-        </div>
-        <div class="l-handle u-clearfix">
-            <div class="c-control">
-                <span class="c-control__play-pause icon-play"></span>
-                <span class="c-control__next icon-skip-forward"></span>
-            </div>
-            <div class="c-setting">
-                <span class="c-setting__volume icon-volume"></span>
-                <div class="c-setting__basic-volume">
-                    <div class="c-setting__cur-volume"></div>
+            <div class="l-handle u-clearfix">
+                <div class="c-control">
+                    <span class="c-control__play-pause icon-play"></span>
+                    <span class="c-control__next icon-skip-forward"></span>
                 </div>
-                <div class="c-setting__team">
-                    <span class="c-setting__lyric icon-paper"></span>
-                    <span class="c-setting__channel icon-menu"></span>
+                <div class="c-setting">
+                    <span class="c-setting__volume icon-volume"></span>
+                    <div class="c-setting__basic-volume">
+                        <div class="c-setting__cur-volume"></div>
+                    </div>
+                    <div class="c-setting__team">
+                        <span class="c-setting__lyric icon-paper"></span>
+                        <span class="c-setting__channel icon-menu"></span>
+                    </div>
+                    <ul class="c-channels-list"></ul>
                 </div>
-                <ul class="c-channels-list"></ul>
             </div>
         </div>
     </div>
-    <script src="js/asset/jquery.min.js"></script>
-    <script src="js/asset/fastclick.js"></script>
-    <script src="js/music-player.min.js"></script>
+    <script src="./js/asset/jquery.min.js"></script>
+    <script src="./js/asset/fastclick.js"></script>
+    <script src="./js/music-player.min.js"></script>
     <script>
         $(function() {
             FastClick.attach(document.body);

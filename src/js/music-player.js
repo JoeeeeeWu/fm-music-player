@@ -1,4 +1,4 @@
-//GetMusic类
+// GetMusic类
 
 function MusicPlayer($container) {
     this.$container = $container;
@@ -82,6 +82,7 @@ MusicPlayer.prototype.getChannels = function () {
     var _this = this;
     this.$container.ready(function () {
         $.get('http://api.jirengu.com/fm/getChannels.php').done(function (data) {
+            console.log(typeof data);
             var channelsArr = JSON.parse(data).channels;
             for (var i = 0; i < channelsArr.length; i++) {
                 var item = '<li data-channel_id=\"' + channelsArr[i].channel_id + '\" ' + 'data-channel_name=' + channelsArr[i].name + ' class=\"c-channels-list__item\">' + channelsArr[i].name + '</li>';
@@ -104,7 +105,6 @@ MusicPlayer.prototype.getSong = function (str) {
         _this.roadSong();
         if(_this.firstLoad){
             _this.firstLoad=false;
-            return
         }else{
             _this.audio.play();
         } 

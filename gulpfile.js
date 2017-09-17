@@ -40,7 +40,7 @@ gulp.task('minirevjs',function(){
     .pipe(rev())
     .pipe(gulp.dest('./disk/js'))
     .pipe(rev.manifest())
-    .pipe(gulp.dest('./rev/js'))
+    .pipe(gulp.dest('./rev/js'));
 })
 
 gulp.task('style',function(){
@@ -54,7 +54,7 @@ gulp.task('style',function(){
     }))
     .pipe(cssver())
     .pipe(rename({
-        suffix: ".min"
+        suffix: ".min",
     }))
     .pipe(rev())
     .pipe(gulp.dest('./disk/css'))
@@ -65,7 +65,7 @@ gulp.task('style',function(){
 
 
 gulp.task('rev',['minihtml','style','minirevjs'],function(){
-    return gulp.src(['./rev-manifest.json','./disk/index.html'])
+    return gulp.src(['./rev/*/*.json','./disk/index.html'])
     .pipe(revCollector())
     .pipe(gulp.dest('./disk'));
 });
